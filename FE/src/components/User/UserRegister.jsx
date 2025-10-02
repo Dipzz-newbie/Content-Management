@@ -1,4 +1,12 @@
+import { useState } from "react";
+
 const UserRegister = () => {
+
+    const [username, setUsername] = useState('')
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmpassword] = useState('')
+
     return <>
         <div className="animate-fade-in bg-gray-800 bg-opacity-80 p-8 rounded-xl shadow-custom border border-gray-700 backdrop-blur-sm w-full max-w-md">
             <div className="text-center mb-8">
@@ -15,7 +23,7 @@ const UserRegister = () => {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i className="fas fa-user text-gray-500" />
                         </div>
-                        <input type="text" id="username" name="username" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Choose a username" required />
+                        <input type="text" id="username" name="username" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Choose a username" required value={username} onChange={(e) => setUsername(e.target.value)}/>
                     </div>
                 </div>
                 <div className="mb-4">
@@ -24,7 +32,7 @@ const UserRegister = () => {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i className="fas fa-id-card text-gray-500" />
                         </div>
-                        <input type="text" id="name" name="name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your full name" required />
+                        <input type="text" id="name" name="name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your full name" required  value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                 </div>
                 <div className="mb-4">
@@ -33,7 +41,7 @@ const UserRegister = () => {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i className="fas fa-lock text-gray-500" />
                         </div>
-                        <input type="password" id="password" name="password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Create a password" required />
+                        <input type="password" id="password" name="password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Create a password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </div>
                 <div className="mb-6">
@@ -42,7 +50,7 @@ const UserRegister = () => {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i className="fas fa-check-double text-gray-500" />
                         </div>
-                        <input type="password" id="confirm_password" name="confirm_password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Confirm your password" required />
+                        <input type="password" id="confirm_password" name="confirm_password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Confirm your password" required value={confirmPassword} onChange={(e) => setConfirmpassword(e.target.value)} />
                     </div>
                 </div>
                 <div className="mb-6">
