@@ -11,12 +11,13 @@
       "^.+\\.[t|j]sx?$": "babel-jest"
     }
   },
-  "author": "Eko Kurniawan Khannedy",
+  "author": "Dipzz",
   "license": "ISC",
   "type": "module",
   "dependencies": {
     "@prisma/client": "^4.15.0",
     "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "joi": "^17.9.2",
     "uuid": "^9.0.0",
