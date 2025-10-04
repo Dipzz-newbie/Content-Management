@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { alertError, alertSuccess } from "../../lib/alert";
-import useNavigate from "react-router"
+import useNavigate, { Link } from "react-router"
 
 const UserRegister = async () => {
 
@@ -30,6 +30,8 @@ const UserRegister = async () => {
             await navigate({
                 pathname: "/login"
             })
+        }else{
+            await alertError(responseBody.errors)
         }
 
     }
@@ -46,7 +48,7 @@ const UserRegister = async () => {
                 <h1 className="text-3xl font-bold text-white">Contact Management</h1>
                 <p className="text-gray-300 mt-2">Create a new account</p>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="username" className="block text-gray-300 text-sm font-medium mb-2">Username</label>
                     <div className="relative">
@@ -90,7 +92,7 @@ const UserRegister = async () => {
                 </div>
                 <div className="text-center text-sm text-gray-400">
                     Already have an account?
-                    <a href="index.html" className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">Sign in</a>
+                    <Link to="/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">Sign in</Link>
                 </div>
             </form>
         </div>
