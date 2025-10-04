@@ -1,38 +1,44 @@
 import { useState } from "react";
 import { alertError, alertSuccess } from "../../lib/alert";
-import useNavigate, { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
+import { userRegister } from "../../lib/api/UserAPi";
 
-const UserRegister = async () => {
+const UserRegister = () => {
 
     const [username, setUsername] = useState('')
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmpassword] = useState('')
     const navigate = useNavigate()
+    console.log(username)
+    console.log(name)
+    console.log(password)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (password !== confirmPassword) {
             await alertError("password don't match")
             return;
-        }
-
-        const response = await UserRegister({
-            username: username,
-            password: password,
-            name: name,
-
-
-        })
-        const responseBody = await response.json()
-        if(response.status === 200) {
-            await alertSuccess("User created succesfully")
-            await navigate({
-                pathname: "/login"
+        } else {
+            const res = await userRegister({
+                username: username,
+                password: password,
+                name: name,
             })
-        }else{
-            await alertError(responseBody.errors)
+            const responseBody = await res.json()
+            console.log(responseBody)
+
+            if (res.status === 200) {
+                await alertSuccess("User created succesfully")
+                await navigate({
+                    pathname: "/login"
+                })
+            } else {
+                await alertError(responseBody.errors)
+            }
         }
+
+
 
     }
 
