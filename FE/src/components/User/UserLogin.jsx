@@ -20,9 +20,10 @@ const UserLogin = () => {
         e.preventDefault();
 
        const response = await userLogin(payload);
-       const responseBody = await response.json;
+       const responseBody = await response.json();
+       console.log(responseBody) 
        if(response.status === 200) {
-        const token = responseBody.data.token();
+        const token = responseBody.data.token;
         setToken(token);
         await navigate({
             pathname: "/dashboard/contacts"
