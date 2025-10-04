@@ -1,20 +1,35 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { userLogin } from "../../lib/api/UserAPi";
+import { alertError } from "../../lib/alert";
+import {useLocalStorage} from "react-use";
 
 const UserLogin = () => {
 
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const [_, setToken] = useLocalStorage("token", "");
 
     const payload  = {
         username,
         password
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        
-       
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+
+       const response = await userLogin(payload);
+       const responseBody = await response.json;
+       if(response.status === 200) {
+        const token = responseBody.data.token();
+        setToken(token);
+        await navigate({
+            pathname: "/dashboard/contacts"
+        })
+       }else {
+        alertError(responseBody.errors);
+       }
     }
 
     return <>
@@ -26,7 +41,7 @@ const UserLogin = () => {
                 <h1 className="text-3xl font-bold text-white">Contact Management</h1>
                 <p className="text-gray-300 mt-2">Sign in to your account</p>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="mb-5">
                     <label htmlFor="username" className="block text-gray-300 text-sm font-medium mb-2">Username</label>
                     <div className="relative">
