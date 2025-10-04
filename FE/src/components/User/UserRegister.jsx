@@ -10,25 +10,25 @@ const UserRegister = () => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmpassword] = useState('')
     const navigate = useNavigate()
-    console.log(username)
-    console.log(name)
-    console.log(password)
 
+    const payload = {
+        username: username,
+        password: password,
+        name: name,
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        
         if (password !== confirmPassword) {
             await alertError("password don't match")
             return;
         } else {
-            const res = await userRegister({
-                username: username,
-                password: password,
-                name: name,
-            })
-            const responseBody = await res.json()
+            const response = await userRegister(payload)
+            const responseBody = await response.json()
             console.log(responseBody)
 
-            if (res.status === 200) {
+            if (response.status === 200) {
                 await alertSuccess("User created succesfully")
                 await navigate({
                     pathname: "/login"

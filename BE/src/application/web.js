@@ -6,7 +6,10 @@ import cors from "cors";
 
 export const web = express();
 web.use(express.json());
-web.use(cors());
+web.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true
+}));
 
 web.use(publicRouter);
 web.use(userRouter);
