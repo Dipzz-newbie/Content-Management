@@ -1,14 +1,41 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
+import { contactCreate } from "../../lib/api/ContactsApi";
+import { useLocalStorage } from "react-use";
+import { alertError, alertSuccess } from "../../lib/alert";
 
 
 const ContactCreate = () => {
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [token, _] = useLocalStorage("token", "")
+    const navigate = useNavigate();
+    const [first_name, setFirstName] = useState("");
+    const [last_name, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("")
+    const [phone, setPhoneNumber] = useState("");
 
+    const payload = {
+        first_name,
+        last_name,
+        email,
+        phone
+    }
+
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+
+        const response = await contactCreate(token, payload);
+        const responseBody = await response.json();
+        console.log(responseBody);
+        if (response.status === 200) {
+            await alertSuccess("Contact created successfully")
+            await navigate({
+                pathname:"/dashbord/contacts"
+            })
+        }else {
+            await alertError(responseBody.errors)
+        }
+    }
 
     return <>
         <main className="container mx-auto px-4 py-8 flex-grow">
@@ -22,7 +49,7 @@ const ContactCreate = () => {
             </div>
             <div className="bg-gray-800 bg-opacity-80 rounded-xl shadow-custom border border-gray-700 overflow-hidden max-w-2xl mx-auto animate-fade-in">
                 <div className="p-8">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                             <div>
                                 <label htmlFor="first_name" className="block text-gray-300 text-sm font-medium mb-2">First Name</label>
@@ -30,7 +57,7 @@ const ContactCreate = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-user-tag text-gray-500" />
                                     </div>
-                                    <input type="text" id="first_name" name="first_name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter first name" required value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+                                    <input type="text" id="first_name" name="first_name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter first name" required value={first_name} onChange={(e) => setFirstName(e.target.value)}/>
                                 </div>
                             </div>
                             <div>
@@ -39,7 +66,7 @@ const ContactCreate = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-user-tag text-gray-500" />
                                     </div>
-                                    <input type="text" id="last_name" name="last_name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter last name" required value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+                                    <input type="text" id="last_name" name="last_name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter last name" required value={last_name} onChange={(e) => setLastName(e.target.value)}/>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +86,7 @@ const ContactCreate = () => {
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i className="fas fa-phone text-gray-500" />
                                 </div>
-                                <input type="tel" id="phone" name="phone" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter phone number" required value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                                <input type="tel" id="phone" name="phone" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter phone number" required value={phone} onChange={(e) => setPhoneNumber(e.target.value)} />
                             </div>
                         </div>
                         <div className="flex justify-end space-x-4">
