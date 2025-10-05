@@ -7,7 +7,7 @@ import UserLogin from './components/User/UserLogin'
 import DashboardLayout from './components/DashboardLayout'
 import UserProfile from './components/User/UserProfile'
 import UserLogout from './components/User/UserLogout'
-import ContactCreate from './components/Contact/ContactCreate,'
+import ContactCreate from './components/Contact/ContactCreate'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
