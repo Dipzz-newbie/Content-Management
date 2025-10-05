@@ -82,7 +82,7 @@ const UserProfile = () => {
                             </div>
                             <h2 className="text-xl font-semibold text-white">Edit Profile</h2>
                         </div>
-                        <form>
+                        <form onSubmit={handleSubmitProfile}>
                             <div className="mb-5">
                                 <label htmlFor="name" className="block text-gray-300 text-sm font-medium mb-2">Full Name</label>
                                 <div className="relative">
@@ -109,7 +109,7 @@ const UserProfile = () => {
                             </div>
                             <h2 className="text-xl font-semibold text-white">Change Password</h2>
                         </div>
-                        <form>
+                        <form onSubmit={handleSubmitPassword}>
                             <div className="mb-5">
                                 <label htmlFor="new_password" className="block text-gray-300 text-sm font-medium mb-2">New Password</label>
                                 <div className="relative">
