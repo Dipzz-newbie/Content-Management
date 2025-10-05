@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router";
 const DashboardLayout = () => {
         
     return <>
-        <div>
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex flex-col">
             {/* Header with right-aligned menu */}
             <header className="bg-gradient shadow-lg">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -33,6 +33,9 @@ const DashboardLayout = () => {
             {/* Main content */}
             <main className="container mx-auto px-4 py-8 flex-grow">
                 <Outlet/>
+                <div class="mt-10 mb-6 text-center text-gray-400 text-sm animate-fade-in">
+                <p>© 2025 Contact Management. All rights reserved.</p>
+        </div>
             </main>
             {/* JavaScript for toggle search form */}
         </div>
