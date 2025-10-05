@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffectOnce, useLocalStorage } from "react-use"
-import { userDetail } from "../../lib/api/UserAPi";
+import { userDetail, userUpdateProfile } from "../../lib/api/UserAPi";
 import { alertError } from "../../lib/alert";
 
 
@@ -11,21 +11,33 @@ const UserProfile = () => {
     const [confirmPassword, setconfirmPassword] = useState('');
     const [token, _] = useLocalStorage("token", "");
 
+    const payloadName = {
+        username,
+    }
+
+    const payloadPassword = {
+        password,
+    }
 
     const fetchUserDetail = async() => {
         const response = await userDetail(token);
         const responseBody = await response.json(); 
-        console.log(responseBody)
 
         if (response.status === 200) {
-            setUsername(response.data.name);
+            setUsername(responseBody.data.name);
         }else {
             await alertError(responseBody.errors);
         }
     }
 
-    useEffectOnce(() => {
+    const handleSubmitProfile = async() => {
+        const response = await userUpdateProfile(token, payloadName)
+        const responseBody = await response.json()
+        console.log(responseBody)
+    }
 
+    useEffectOnce(() => {
+        fetchUserDetail().then(() => console.log("User detail fetched successfully"))
     })
 
     return <>
