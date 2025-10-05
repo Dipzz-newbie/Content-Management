@@ -30,7 +30,7 @@ const ContactCreate = () => {
         if (response.status === 200) {
             await alertSuccess("Contact created successfully")
             await navigate({
-                pathname:"/dashbord/contacts"
+                pathname:"/dashboard/contacts"
             })
         }else {
             await alertError(responseBody.errors)
