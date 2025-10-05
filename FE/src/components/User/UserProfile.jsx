@@ -1,30 +1,24 @@
 import { useState } from "react";
 import { useEffectOnce, useLocalStorage } from "react-use"
-import { userDetail, userUpdateProfile } from "../../lib/api/UserAPi";
+import { userDetail, userUpdatePassword, userUpdateProfile } from "../../lib/api/UserAPi";
 import { alertError, alertSuccess } from "../../lib/alert";
 
 
 const UserProfile = () => {
 
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setconfirmPassword] = useState('');
     const [token, _] = useLocalStorage("token", "");
 
-    const payloadName = {
-        username,
-    }
-
-    const payloadPassword = {
-        password,
-    }
+    
 
     const fetchUserDetail = async() => {
         const response = await userDetail(token);
         const responseBody = await response.json(); 
 
         if (response.status === 200) {
-            setUsername(responseBody.data.name);
+            setName(responseBody.data.name);
         }else {
             await alertError(responseBody.errors);
         }
@@ -32,7 +26,7 @@ const UserProfile = () => {
 
     const handleSubmitProfile = async(e) => {
         e.preventDefault();
-        const response = await userUpdateProfile(token, payloadName);
+        const response = await userUpdateProfile(token, {name});
         const responseBody = await response.json();
         console.log(responseBody);
 
@@ -51,7 +45,7 @@ const UserProfile = () => {
             return;
         }
 
-        const response = await userUpdateProfile(token, payloadPassword);
+        const response = await userUpdatePassword(token, {password});
         const responseBody = await response.json();
         console.log(responseBody);
 
@@ -89,7 +83,7 @@ const UserProfile = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-user text-gray-500" />
                                     </div>
-                                    <input type="text" id="name" name="name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your full name" required value={username} onChange={(e) => setUsername(e.target.value)} />
+                                    <input type="text" id="name" name="name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your full name" required value={name} onChange={(e) => setName(e.target.value)} />
                                 </div>
                             </div>
                             <div className="mt-6">

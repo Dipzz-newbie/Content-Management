@@ -48,9 +48,33 @@ export const userLogin = async (data) => {
     }
 }
 
-export const userUpdateProfile = async (token, data) => {
+export const userUpdateProfile = async (token, name) => {
     try {
-        const response = await axios.patch(`${import.meta.env.VITE_API_PATH}/users/current`,data, {
+        const response = await axios.patch(`${import.meta.env.VITE_API_PATH}/users/current`, name, {
+            headers : {
+                'Content-type': "application/json",
+                'Accept': "application/json",
+                'Authorization' : token
+            }
+        });
+        return {
+            status: response.status,
+            json: async () => response.data
+        };
+    } catch (error) {
+        if (error.response) {
+            return {
+                status: error.response.status,
+                json: async () => error.response.data
+            };
+        }
+        throw error;
+    }
+}
+
+export const userUpdatePassword = async (token, password) => {
+    try {
+        const response = await axios.patch(`${import.meta.env.VITE_API_PATH}/users/current`, password, {
             headers : {
                 'Content-type': "application/json",
                 'Accept': "application/json",
