@@ -1,6 +1,33 @@
+import { useState } from "react";
+import { useEffectOnce, useLocalStorage } from "react-use"
+import { userDetail } from "../../lib/api/UserAPi";
+import { alertError } from "../../lib/alert";
 
 
 const UserProfile = () => {
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setconfirmPassword] = useState('');
+    const [token, _] = useLocalStorage("token", "");
+
+
+    const fetchUserDetail = async() => {
+        const response = await userDetail(token);
+        const responseBody = await response.json(); 
+        console.log(responseBody)
+
+        if (response.status === 200) {
+            setUsername(response.data.name);
+        }else {
+            await alertError(responseBody.errors);
+        }
+    }
+
+    useEffectOnce(() => {
+
+    })
+
     return <>
         <div>
             <div className="flex items-center mb-6">
@@ -24,7 +51,7 @@ const UserProfile = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-user text-gray-500" />
                                     </div>
-                                    <input type="text" id="name" name="name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your full name" defaultValue="John Doe" required />
+                                    <input type="text" id="name" name="name" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your full name" required value={username} onChange={(e) => setUsername(e.target.value)} />
                                 </div>
                             </div>
                             <div className="mt-6">
@@ -51,7 +78,7 @@ const UserProfile = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-lock text-gray-500" />
                                     </div>
-                                    <input type="password" id="new_password" name="new_password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your new password" required />
+                                    <input type="password" id="new_password" name="new_password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter your new password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
                                 </div>
                             </div>
                             <div className="mb-5">
@@ -60,7 +87,7 @@ const UserProfile = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-check-double text-gray-500" />
                                     </div>
-                                    <input type="password" id="confirm_password" name="confirm_password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Confirm your new password" required />
+                                    <input type="password" id="confirm_password" name="confirm_password" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Confirm your new password" required value={confirmPassword} onChange={(e) => setconfirmPassword(e.target.value)}/>
                                 </div>
                             </div>
                             <div className="mt-6">
