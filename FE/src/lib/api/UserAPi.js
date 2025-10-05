@@ -2,7 +2,11 @@ import axios from "axios";
 
 export const userRegister = async (data) => {
     try {
-        const response = await axios.post(`${import.meta.env.VITE_API_PATH}/users`, data);
+        const response = await axios.post(`${import.meta.env.VITE_API_PATH}/users`, data, {
+            headers : {
+                'Content-type': "application/json"
+            }
+        });
         return {
             status: response.status,
             json: async () => response.data
@@ -24,7 +28,11 @@ export const userRegister = async (data) => {
 
 export const userLogin = async (data) => {
     try {
-        const response = await axios.post(`${import.meta.env.VITE_API_PATH}/users/login`, data);
+        const response = await axios.post(`${import.meta.env.VITE_API_PATH}/users/login`, data, {
+            headers : {
+                'Content-type': "application/json"
+            }
+        });
         return {
             status: response.status,
             json: async () => response.data
@@ -40,16 +48,40 @@ export const userLogin = async (data) => {
     }
 }
 
-export const userDetail = async (data) => {
+export const userUpdateProfile = async (token, data) => {
     try {
-        const response = await axios.get(`${import.meta.env.VITE_API_PATH}/users/current`, {
-            headers: {
-                'Accept': "aplication/json",
-                'Authorization': data
+        const response = await axios.patch(`${import.meta.env.VITE_API_PATH}/users/current`,data, {
+            headers : {
+                'Content-type': "application/json",
+                'Accept': "application/json",
+                'Authorization' : token
             }
         });
         return {
-            status: response.data,
+            status: response.status,
+            json: async () => response.data
+        };
+    } catch (error) {
+        if (error.response) {
+            return {
+                status: error.response.status,
+                json: async () => error.response.data
+            };
+        }
+        throw error;
+    }
+}
+
+export const userDetail = async (token) => {
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_PATH}/users/current`, {
+            headers: {
+                'Accept': "application/json",
+                'Authorization': token
+            }
+        });
+        return {
+            status: response.status,
             json: async () => response.data
         }
     } catch (error) {
