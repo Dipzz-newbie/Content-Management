@@ -121,3 +121,26 @@ export const userDetail = async (token) => {
 
     
 }
+
+export const userLogout = async (token) => {
+    try {
+        const response = await axios.delete(`${import.meta.env.VITE_API_PATH}/users/logout`,  {
+            headers : {
+                'Accept': "application/json",
+                'Authorization' : token
+            }
+        });
+        return {
+            status: response.status,
+            json: async () => response.data
+        };
+    } catch (error) {
+        if (error.response) {
+            return {
+                status: error.response.status,
+                json: async () => error.response.data
+            };
+        }
+        throw error;
+    }
+}

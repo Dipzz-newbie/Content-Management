@@ -50,6 +50,8 @@ const UserProfile = () => {
         console.log(responseBody);
 
         if (response.status === 200) {
+            setPassword("")
+            setconfirmPassword("")
             await alertSuccess("Password Update Successfully!");
         }else {
             await alertError(responseBody.errors);
