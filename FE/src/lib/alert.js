@@ -12,7 +12,7 @@ import Swal from "sweetalert2"
  export const alertError = async(massage) => {
     return Swal.fire({
         icon:"error",
-        title: "Error",
+        title: "Upss",
         text: massage
         
     })

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffectOnce, useLocalStorage } from "react-use"
 import { userDetail, userUpdateProfile } from "../../lib/api/UserAPi";
-import { alertError } from "../../lib/alert";
+import { alertError, alertSuccess } from "../../lib/alert";
 
 
 const UserProfile = () => {
@@ -30,14 +30,40 @@ const UserProfile = () => {
         }
     }
 
-    const handleSubmitProfile = async() => {
-        const response = await userUpdateProfile(token, payloadName)
-        const responseBody = await response.json()
-        console.log(responseBody)
+    const handleSubmitProfile = async(e) => {
+        e.preventDefault();
+        const response = await userUpdateProfile(token, payloadName);
+        const responseBody = await response.json();
+        console.log(responseBody);
+
+        if (response.status === 200) {
+            await alertSuccess("Profile Update Successfully!");
+        }else {
+            await alertError(responseBody.errors);
+        }
+    }
+    
+    const handleSubmitPassword = async(e) => {
+        e.preventDefault();
+
+        if (password !== confirmPassword){
+            await alertError("Password Don't Match");
+            return;
+        }
+
+        const response = await userUpdateProfile(token, payloadPassword);
+        const responseBody = await response.json();
+        console.log(responseBody);
+
+        if (response.status === 200) {
+            await alertSuccess("Password Update Successfully!");
+        }else {
+            await alertError(responseBody.errors);
+        }
     }
 
     useEffectOnce(() => {
-        fetchUserDetail().then(() => console.log("User detail fetched successfully"))
+        fetchUserDetail().then(() => console.log("User detail fetched successfully"));
     })
 
     return <>
