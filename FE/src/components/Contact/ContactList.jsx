@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { useEffectOnce, useLocalStorage } from "react-use";
+import { useEffect, useState } from "react";
+import { useLocalStorage } from "react-use";
+import { contactList } from "../../lib/api/ContactsApi";
+import { alertError } from "../../lib/alert";
 
 const ContactList = () => {
 
@@ -9,6 +11,28 @@ const ContactList = () => {
     const [phone, setPhone] = useState("")
     const [contacts, setContacts] = useState([])
     const [page, setPage] = useState(1)
+
+    const payload = {
+        name,
+        email,
+        phone,
+        page
+    }
+
+    const fetchContacts = async() => {
+        const response = await contactList(token, payload)
+        const responseBody = await response.json()
+
+        if (response.status === 200) {
+            setContacts(responseBody.data)
+        }else {
+            await alertError(responseBody.errors)
+        }
+    }
+
+    useEffect(() => {
+        fetchContacts().then(() => console.log("fetched successfully"))
+    })
 
     useEffectOnce(() => {
         const toggleButton = document.getElementById('toggleSearchForm');
