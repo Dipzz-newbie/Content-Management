@@ -22,7 +22,38 @@ export const contactCreate = async (token, data) => {
         }
         throw error;
     }
+}
 
 
-    
+export const contactList = async (token, filters = {}) => {
+
+    const {name, email, phone, page} = filters
+
+    const url = new URL(`${import.meta.env.VITE_API_PATH}/contacts`)
+    if(name) url.searchParams.append('name', name)
+    if(email) url.searchParams.append('name', email)
+    if(phone) url.searchParams.append('name', phone)
+    if(page) url.searchParams.append('name', page)
+
+    try {
+        const response = await axios.get(url.toString(), {
+            headers : {
+                'Content-type': "application/json",
+                'Accept': "application/json",
+                'Authorization' : token
+            }
+        });
+        return {
+            status: response.status,
+            json: async () => response.data
+        };
+    } catch (error) {
+        if (error.response) {
+            return {
+                status: error.response.status,
+                json: async () => error.response.data
+            };
+        }
+        throw error;
+    }
 }

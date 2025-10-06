@@ -1,6 +1,14 @@
-import { useEffectOnce } from "react-use";
+import { useState } from "react";
+import { useEffectOnce, useLocalStorage } from "react-use";
 
 const ContactList = () => {
+
+    const [token, _] = useLocalStorage("token", "")
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
+    const [contacts, setContacts] = useState([])
+    const [page, setPage] = useState(1)
 
     useEffectOnce(() => {
         const toggleButton = document.getElementById('toggleSearchForm');
