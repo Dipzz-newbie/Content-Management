@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { contactCreate } from "../../lib/api/ContactsApi";
 import { useLocalStorage } from "react-use";
 import { alertError, alertSuccess } from "../../lib/alert";
