@@ -26,7 +26,6 @@ const ContactCreate = () => {
 
         const response = await contactCreate(token, payload);
         const responseBody = await response.json();
-        console.log(responseBody);
         if (response.status === 200) {
             await alertSuccess("Contact created successfully")
             await navigate({
