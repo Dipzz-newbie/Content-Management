@@ -1,17 +1,31 @@
 import {useState } from "react";
 import { Link, useParams } from "react-router";
 import { useLocalStorage } from "react-use";
+import { contactDetail } from "../../lib/api/ContactsApi";
+import { alertError } from "../../lib/alert";
 
 
 const ContactEdit = () => {
 
-    const [first_name, setFirstName] = useState("")
-    const [last_name, setLastName] = useState("")
-    const [email, setEmail] = useState("")
-    const [phone, setPhone] = useState("")
-    const [id] = useParams()
-    const [token, _] = useLocalStorage("token", "")
+    const [first_name, setFirstName] = useState("");
+    const [last_name, setLastName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [id] = useParams();
+    const [token, _] = useLocalStorage("token", "");
 
+    const fetchContact = async() => {
+        const response = await contactDetail(token, id);
+        const responseBody = response.json(); 
+
+        if (response.status === 200){
+            setFirstName(responseBody.data.first_name);
+            setLastName(responseBody.data.last_name);
+            setEmail(responseBody.data.email);
+            setPhone(responseBody.data.phone);
+        }else{
+            await alertError(responseBody.errors);
+        }
+    }
 
     return <>
         <main className="container mx-auto px-4 py-8 flex-grow">
