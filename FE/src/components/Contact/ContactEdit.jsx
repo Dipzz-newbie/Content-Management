@@ -1,8 +1,8 @@
 import {useState } from "react";
 import { Link, useParams } from "react-router";
 import { useEffectOnce, useLocalStorage } from "react-use";
-import { contactDetail } from "../../lib/api/ContactsApi";
-import { alertError } from "../../lib/alert";
+import { contactDetail, contactUpdate } from "../../lib/api/ContactsApi";
+import { alertError, alertSuccess } from "../../lib/alert";
 
 
 const ContactEdit = () => {
@@ -29,6 +29,19 @@ const ContactEdit = () => {
         }
     }
 
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        const response = await contactUpdate(token, {id, first_name, last_name, email, phone})
+        const responseBody = await response.json()
+
+        if(response.status === 200) {   
+            await alertSuccess("Success edit contact!")
+        }else {
+            await alertError(responseBody.errors)
+        }
+    }
+        
+
     useEffectOnce(() => {
         fetchContact().then(() => console.log("Success to fetched"))
     })
@@ -45,7 +58,7 @@ const ContactEdit = () => {
             </div>
             <div className="bg-gray-800 bg-opacity-80 rounded-xl shadow-custom border border-gray-700 overflow-hidden max-w-2xl mx-auto animate-fade-in">
                 <div className="p-8">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                             <div>
                                 <label htmlFor="first_name" className="block text-gray-300 text-sm font-medium mb-2">First Name</label>

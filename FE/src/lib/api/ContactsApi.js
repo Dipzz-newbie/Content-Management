@@ -107,7 +107,7 @@ export const contactUpdate = async (token, fetch = {}) => {
     const {id, first_name, last_name, email, phone} = fetch
 
     try {
-        const response = await axios.put(`${import.meta.env.VITE_API_PATH}/contacts/${id}`, data, {
+        const response = await axios.put(`${import.meta.env.VITE_API_PATH}/contacts/${id}`, fetch, {
             headers : {
                 'Content-type': "application/json",
                 'Accept': "application/json",
