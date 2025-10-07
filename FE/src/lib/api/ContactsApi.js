@@ -56,3 +56,25 @@ export const contactList = async (token, fetch = {}) => {
     }
 }
 
+
+export const contactDelete = async(token, id) => {
+    try {
+        const response = await axios.delete(`${import.meta.env.VITE_API_PATH}/contact/${id}`, {
+            headers : {
+                'Content-Type': "application/json",
+                'Authorization': token
+            }
+        });
+        return {
+            status : response.status,
+            json: async () => response.data
+        };
+    } catch(error) {
+        if (error.response) {
+            return {
+                status : error.response.status,
+                json: async () => error.response.data
+            }
+        }
+    }
+} 

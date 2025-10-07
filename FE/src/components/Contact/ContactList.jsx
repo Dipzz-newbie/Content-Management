@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useEffectOnce, useLocalStorage } from "react-use";
 import { contactList } from "../../lib/api/ContactsApi";
-import { alertError } from "../../lib/alert";
+import { alertConfirm, alertError } from "../../lib/alert";
 import { Link } from "react-router";
 
 const ContactList = () => {
@@ -44,6 +44,12 @@ const ContactList = () => {
             setTotalPage(responseBody.paging.total_page)
         } else {
             await alertError(responseBody.errors)
+        }
+    }
+
+    const handleContactDelete = async(id) => {
+        if (!await alertConfirm("Are you sure you want to delete this contact?")){
+            return;
         }
     }
 
