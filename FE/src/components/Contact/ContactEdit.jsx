@@ -1,6 +1,6 @@
 import {useState } from "react";
 import { Link, useParams } from "react-router";
-import { useLocalStorage } from "react-use";
+import { useEffectOnce, useLocalStorage } from "react-use";
 import { contactDetail } from "../../lib/api/ContactsApi";
 import { alertError } from "../../lib/alert";
 
@@ -9,13 +9,15 @@ const ContactEdit = () => {
 
     const [first_name, setFirstName] = useState("");
     const [last_name, setLastName] = useState("");
+    const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [id] = useParams();
+    const {id} = useParams();
     const [token, _] = useLocalStorage("token", "");
 
     const fetchContact = async() => {
         const response = await contactDetail(token, id);
-        const responseBody = response.json(); 
+        const responseBody = await response.json(); 
+        console.log(responseBody)
 
         if (response.status === 200){
             setFirstName(responseBody.data.first_name);
@@ -26,6 +28,10 @@ const ContactEdit = () => {
             await alertError(responseBody.errors);
         }
     }
+
+    useEffectOnce(() => {
+        fetchContact().then(() => console.log("Success to fetched"))
+    })
 
     return <>
         <main className="container mx-auto px-4 py-8 flex-grow">
