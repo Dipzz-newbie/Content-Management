@@ -78,3 +78,53 @@ export const contactDelete = async(token, id) => {
         }
     }
 } 
+
+
+export const contactDetail = async(token, id) => {
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_PATH}/contacts/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            }
+        });
+        return {
+            status: response.status,
+            json: async () => response.data
+        }
+    } catch (errror) {
+        if (error.response) {
+            return {
+                status : error.response.status,
+                json: async () => error.response.data
+            }
+        }
+    }
+}
+
+export const contactUpdate = async (token, fetch = {}) => {
+
+    const {id, first_name, last_name, email, phone} = fetch
+
+    try {
+        const response = await axios.put(`${import.meta.env.VITE_API_PATH}/contacts/${id}`, data, {
+            headers : {
+                'Content-type': "application/json",
+                'Accept': "application/json",
+                'Authorization' : token
+            }
+        });
+        return {
+            status: response.status,
+            json: async () => response.data
+        };
+    } catch (error) {
+        if (error.response) {
+            return {
+                status: error.response.status,
+                json: async () => error.response.data
+            };
+        }
+        throw error;
+    }
+}
