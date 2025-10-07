@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useEffectOnce, useLocalStorage } from "react-use";
-import { contactList } from "../../lib/api/ContactsApi";
-import { alertConfirm, alertError } from "../../lib/alert";
+import { contactDelete, contactList } from "../../lib/api/ContactsApi";
+import { alertConfirm, alertError, alertSuccess } from "../../lib/alert";
 import { Link } from "react-router";
 
 const ContactList = () => {
@@ -50,6 +50,17 @@ const ContactList = () => {
     const handleContactDelete = async(id) => {
         if (!await alertConfirm("Are you sure you want to delete this contact?")){
             return;
+        } else {
+            const response = await contactDelete(token, id)
+            const responseBody = response.json()
+            console.log(responseBody)
+            
+            if (response.status === 200) {
+                await alertSuccess("Success Delete Contact!")
+                setReload(!reload)
+            } else {
+                await alertError(responseBody.errors)
+            }
         }
     }
 
@@ -203,8 +214,8 @@ const ContactList = () => {
                                 <Link to={`/dashboard/contacts/${contact.id}/edit`} className="px-4 py-2 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-md flex items-center">
                                     <i className="fas fa-edit mr-2" /> Edit
                                 </Link>
-                                <button className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-md flex items-center">
-                                    <i className="fas fa-trash-alt mr-2" /> Delete
+                                <button className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-md flex items-center" onClick={() => handleContactDelete(contact.id)}>
+                                    <i className="fas fa-trash-alt mr-2"  /> Delete
                                 </button>
                             </div>
                         </div>

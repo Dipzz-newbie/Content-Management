@@ -59,7 +59,7 @@ export const contactList = async (token, fetch = {}) => {
 
 export const contactDelete = async(token, id) => {
     try {
-        const response = await axios.delete(`${import.meta.env.VITE_API_PATH}/contact/${id}`, {
+        const response = await axios.delete(`${import.meta.env.VITE_API_PATH}/contacts/${id}`, {
             headers : {
                 'Content-Type': "application/json",
                 'Authorization': token
