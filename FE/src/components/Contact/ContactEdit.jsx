@@ -35,7 +35,7 @@ const ContactEdit = () => {
         const responseBody = await response.json()
 
         if(response.status === 200) {   
-            await alertSuccess("Success edit contact!")
+            await alertSuccess("Edit Contact Successfully!")
         }else {
             await alertError(responseBody.errors)
         }
