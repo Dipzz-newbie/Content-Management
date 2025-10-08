@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useEffectOnce, useLocalStorage } from "react-use";
 import { contactDetail } from "../../lib/api/ContactsApi";
 import { alertError, alertSuccess } from "../../lib/alert";
-import { addressCreate } from "../../lib/api/Address";
+import { addressCreate } from "../../lib/api/AddressApi";
 
 const AddressCreate = () => {
     
-    const [token, _] = useLocalStorage("token", "")
-    const {id} = useParams()
-    const [contact, setContact] = useState([])
-    const [street, setStreet] = useState("")
-    const [city, setCity] = useState("")
-    const [province, setProvince] = useState("")
-    const [country, setCountry] = useState("")
-    const [postal_code, setPostalCode] = useState("")
+    const navigate = useNavigate();
+    const [token, _] = useLocalStorage("token", "");
+    const {id} = useParams();
+    const [contact, setContact] = useState([]);
+    const [street, setStreet] = useState("");
+    const [city, setCity] = useState("");
+    const [province, setProvince] = useState("");
+    const [country, setCountry] = useState("");
+    const [postal_code, setPostalCode] = useState("");
 
     const payload = {
         street,
@@ -24,6 +25,22 @@ const AddressCreate = () => {
         postal_code
     }
 
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        const response = await addressCreate(token, id, payload)
+        const responseBody = await response.json()
+        console.log(responseBody)
+
+        if (response.status === 200) {
+            await alertSuccess("Addresses Create Successfully!")
+            await navigate({
+                pathname: `/dashboard/contacts/${id}`
+            })
+        } else {
+            await alertError(responseBody.errors)
+        }
+    } 
+
     const fetchContact = async() => {
         const response = await contactDetail(token, id)
         const responseBody = await response.json()
@@ -31,6 +48,7 @@ const AddressCreate = () => {
 
         if (response.status === 200) {
             setContact(responseBody.data)
+            
         } else {
             await alertError(responseBody.errors)
         }
@@ -39,17 +57,6 @@ const AddressCreate = () => {
     useEffectOnce(() => {
         fetchContact().then(() => console.log("success to fetch!"))
     })
-
-    const handleSubmit = async() => {
-        const response = await addressCreate(token, id, payload)
-        const responseBody = await response.json()
-
-        if (response.status === 200) {
-            await alertSuccess("Addresses Create Successfully!")
-        } else {
-            await alertError(responseBody.errors)
-        }
-    } 
 
     return <>
             <div>
@@ -129,7 +136,7 @@ const AddressCreate = () => {
                             <Link to={`/dashboard/contacts/${id}`} className="px-5 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 flex items-center shadow-md">
                                 <i className="fas fa-times mr-2" /> Cancel
                             </Link>
-                            <button type="submit" className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center">
+                            <button type="submit" className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center" onClick={handleSubmit}>
                                 <i className="fas fa-plus-circle mr-2" /> Add Address
                             </button>
                         </div>

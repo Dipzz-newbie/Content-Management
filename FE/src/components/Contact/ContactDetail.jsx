@@ -18,6 +18,7 @@ const ContactDetail = () => {
 
         if (response.status === 200) {
             setContacts(responseBody.data)
+            
         } else {
             await alertError(responseBody.errors)
         }
