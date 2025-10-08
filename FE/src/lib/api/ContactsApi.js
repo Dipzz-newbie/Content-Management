@@ -128,25 +128,3 @@ export const contactUpdate = async (token, fetch = {}) => {
         throw error;
     }
 }
-
-export const contactShowDetail = async(token) => {
-    try {
-        const response = await axios.get(`${import.meta.env.VITE_API_PATH}/contacts`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token
-            }
-        });
-        return {
-            status: response.status,
-            json: async () => response.data
-        }
-    } catch (errror) {
-        if (error.response) {
-            return {
-                status : error.response.status,
-                json: async () => error.response.data
-            }
-        }
-    }
-}
