@@ -89,14 +89,14 @@ const ContactDetail = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 {/* Add Address Card */}
                                 <div className="bg-gray-700 bg-opacity-50 p-5 rounded-lg border-2 border-dashed border-gray-600 shadow-md card-hover">
-                                    <a href="add_address.html" className="block h-full">
+                                    <Link to={`addresses/create`} className="block h-full">
                                         <div className="flex flex-col items-center justify-center h-full text-center py-4">
                                             <div className="w-16 h-16 bg-gradient rounded-full flex items-center justify-center mb-4 shadow-lg transform transition-transform duration-300 hover:scale-110">
                                                 <i className="fas fa-plus text-2xl text-white" />
                                             </div>
                                             <h4 className="text-lg font-semibold text-white">Add Address</h4>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                                 {/* Address Card 1 */}
                                 <div className="bg-gray-700 bg-opacity-50 p-5 rounded-lg shadow-md border border-gray-600 card-hover">
@@ -193,9 +193,9 @@ const ContactDetail = () => {
                             <Link to="/dashboard/contacts" className="px-5 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 flex items-center shadow-md">
                                 <i className="fas fa-arrow-left mr-2" /> Back
                             </Link>
-                            <a href="edit_contact.html" className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center">
+                            <Link to={`/dashboard/contacts/${id}/edit   `} className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center">
                                 <i className="fas fa-user-edit mr-2" /> Edit Contact
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
