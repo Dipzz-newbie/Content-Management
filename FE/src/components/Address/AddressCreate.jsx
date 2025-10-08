@@ -1,16 +1,31 @@
 import { useState } from "react";
 import { useParams } from "react-router";
-import { useLocalStorage } from "react-use";
+import { useEffectOnce, useLocalStorage } from "react-use";
+import { contactDetail } from "../../lib/api/ContactsApi";
+import { alertError } from "../../lib/alert";
 
 const AddressCreate = () => {
     
     const [token, _] = useLocalStorage("token", "")
     const {id} = useParams()
     const[contact, setContact] = useState([])
+    
 
     const fetchContact = async() => {
-        const response = 
+        const response = await contactDetail(token, id)
+        const responseBody = await response.json()
+        console.log(responseBody)
+
+        if (response.status === 200) {
+            setContact(responseBody.data)
+        } else {
+            await alertError(responseBody.errors)
+        }
     }
+
+    useEffectOnce(() => {
+        fetchContact().then(() => console.log("success to fetch!"))
+    })
 
     return <>
             <div>
@@ -31,8 +46,8 @@ const AddressCreate = () => {
                                 <i className="fas fa-user text-white" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-semibold text-white">John Doe</h2>
-                                <p className="text-gray-300 text-sm">john.doe@example.com • +1 (555) 123-4567</p>
+                                <h2 className="text-xl font-semibold text-white">{contact.first_name} {contact.last_name}</h2>
+                                <p className="text-gray-300 text-sm">{contact.email} • {contact.phone}</p>
                             </div>
                         </div>
                     </div>
