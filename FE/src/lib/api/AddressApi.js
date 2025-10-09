@@ -63,3 +63,24 @@ export const addressDetail = async(token, id, addressId) => {
         }
     }
 }
+
+export const addressUpdate = async(token, id, addressId, payload) => {
+    try {
+        const response = await axios.put(`${import.meta.env.VITE_API_PATH}/contatcs/${id}/addresses/${addressId}`, payload, {
+            headers: {
+                "Content-Type" : "application/json",
+                "Accept" : "application/json",
+                "Authorization" : token
+            }
+        })
+        return {
+                status: response.status,
+                json: async() => response.data
+            }
+    } catch(error) {
+        return {
+            status : error.response.status,
+            json: async() => error.response.data
+        }
+    }
+}
