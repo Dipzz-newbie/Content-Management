@@ -1,71 +1,27 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
-import { useEffectOnce, useLocalStorage } from "react-use";
-import { contactDetail } from "../../lib/api/ContactsApi";
-import { alertError, alertSuccess } from "../../lib/alert";
-import { addressCreate } from "../../lib/api/AddressApi";
+import { Link, useParams } from "react-router";
+import { useLocalStorage } from "react-use";
 
-const AddressCreate = () => {
-    
-    const navigate = useNavigate();
-    const [token, _] = useLocalStorage("token", "");
-    const {id} = useParams();
-    const [contact, setContact] = useState([]);
-    const [street, setStreet] = useState("");
-    const [city, setCity] = useState("");
-    const [province, setProvince] = useState("");
-    const [country, setCountry] = useState("");
-    const [postal_code, setPostalCode] = useState("");
 
-    const payload = {
-        street,
-        city,
-        province,
-        country,
-        postal_code
-    }
+const AddressEdit = () => {
 
-    const handleSubmit = async(e) => {
-        e.preventDefault()
-        const response = await addressCreate(token, id, payload)
-        const responseBody = await response.json()
-        console.log(responseBody)
-
-        if (response.status === 200) {
-            await alertSuccess("Addresses Create Successfully!")
-            await navigate({
-                pathname: `/dashboard/contacts/${id}`
-            })
-        } else {
-            await alertError(responseBody.errors)
-        }
-    } 
-
-    const fetchContact = async() => {
-        const response = await contactDetail(token, id)
-        const responseBody = await response.json()
-        console.log(responseBody)
-
-        if (response.status === 200) {
-            setContact(responseBody.data)
-            
-        } else {
-            await alertError(responseBody.errors)
-        }
-    }
-
-    useEffectOnce(() => {
-        fetchContact().then(() => console.log("success to fetch!"))
-    })
+    const [token, _] = useLocalStorage("token", "")
+    const {addressId} = useParams()
+    const { id } = useParams()
+    const [street, setStreet] = useState("")
+    const [city, setCity] = useState("")
+    const [province, setProvince] = useState("")
+    const [country, setCountry] = useState("")
+    const [postal_code, setPostalCode] = useState("")
 
     return <>
-            <div className="container mx-auto px-4 py-8 flex-grow">
+        <div className="container mx-auto px-4 py-8 flex-grow">
             <div className="flex items-center mb-6">
                 <Link to={`/dashboard/contacts/${id}`} className="text-blue-400 hover:text-blue-300 mr-4 flex items-center transition-colors duration-200">
                     <i className="fas fa-arrow-left mr-2" /> Back to Contact Details
                 </Link>
                 <h1 className="text-2xl font-bold text-white flex items-center">
-                    <i className="fas fa-plus-circle text-blue-400 mr-3" /> Add New Address
+                    <i className="fas fa-map-marker-alt text-blue-400 mr-3" /> Edit Address
                 </h1>
             </div>
             <div className="bg-gray-800 bg-opacity-80 rounded-xl shadow-custom border border-gray-700 overflow-hidden max-w-2xl mx-auto animate-fade-in">
@@ -77,8 +33,8 @@ const AddressCreate = () => {
                                 <i className="fas fa-user text-white" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-semibold text-white">{contact.first_name} {contact.last_name}</h2>
-                                <p className="text-gray-300 text-sm">{contact.email} • {contact.phone}</p>
+                                <h2 className="text-xl font-semibold text-white">John Doe</h2>
+                                <p className="text-gray-300 text-sm">john.doe@example.com • +1 (555) 123-4567</p>
                             </div>
                         </div>
                     </div>
@@ -89,7 +45,7 @@ const AddressCreate = () => {
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i className="fas fa-road text-gray-500" />
                                 </div>
-                                <input type="text" id="street" name="street" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter street address" required value={street} onChange={(e) => setStreet(e.target.value)} />
+                                <input type="text" id="street" name="street" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter street address" value={street} onChange={(e) => setStreet(e.target.value)} required />
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
@@ -99,7 +55,7 @@ const AddressCreate = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-city text-gray-500" />
                                     </div>
-                                    <input type="text" id="city" name="city" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter city" required value={city} onChange={(e) => setCity(e.target.value)}/>
+                                    <input type="text" id="city" name="city" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter city" value={city} onChange={(e) => setCity(e.target.value)} required />
                                 </div>
                             </div>
                             <div>
@@ -108,7 +64,7 @@ const AddressCreate = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-map text-gray-500" />
                                     </div>
-                                    <input type="text" id="province" name="province" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter province or state" value={province} onChange={(e) => setProvince(e.target.value)} />
+                                    <input type="text" id="province" name="province" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter province or state" value={province} onChange={(e) => setProvince(e.target.value)} required />
                                 </div>
                             </div>
                         </div>
@@ -119,7 +75,7 @@ const AddressCreate = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-flag text-gray-500" />
                                     </div>
-                                    <input type="text" id="country" name="country" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter country" required value={country} onChange={(e) => setCountry(e.target.value)}/>
+                                    <input type="text" id="country" name="country" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter country" value={country} onChange={setCountry} required />
                                 </div>
                             </div>
                             <div>
@@ -128,7 +84,7 @@ const AddressCreate = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i className="fas fa-mail-bulk text-gray-500" />
                                     </div>
-                                    <input type="text" id="postal_code" name="postal_code" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter postal code" required value={postal_code} onChange={(e) => setPostalCode(e.target.value)}/>
+                                    <input type="text" id="postal_code" name="postal_code" className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Enter postal code" value={postal_code} onChange={(e) => setPostalCode} required />
                                 </div>
                             </div>
                         </div>
@@ -136,15 +92,16 @@ const AddressCreate = () => {
                             <Link to={`/dashboard/contacts/${id}`} className="px-5 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 flex items-center shadow-md">
                                 <i className="fas fa-times mr-2" /> Cancel
                             </Link>
-                            <button type="submit" className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center" onClick={handleSubmit}>
-                                <i className="fas fa-plus-circle mr-2" /> Add Address
+                            <button type="submit" className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center">
+                                <i className="fas fa-save mr-2" /> Save Changes
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
     </>
 }
 
-export default AddressCreate;
+export default AddressEdit;
