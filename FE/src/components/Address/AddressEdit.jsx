@@ -1,18 +1,55 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router";
-import { useLocalStorage } from "react-use";
+import { useEffectOnce, useLocalStorage } from "react-use";
+import { contactDetail } from "../../lib/api/ContactsApi";
+import { alertError } from "../../lib/alert";
+import { addressDetail, addressList } from "../../lib/api/AddressApi";
 
 
 const AddressEdit = () => {
 
-    const [token, _] = useLocalStorage("token", "")
-    const {addressId} = useParams()
-    const { id } = useParams()
-    const [street, setStreet] = useState("")
-    const [city, setCity] = useState("")
-    const [province, setProvince] = useState("")
-    const [country, setCountry] = useState("")
-    const [postal_code, setPostalCode] = useState("")
+    const [token, _] = useLocalStorage("token", "");
+    const {addressId} = useParams();
+    const { id } = useParams();
+    const [street, setStreet] = useState("");
+    const [city, setCity] = useState("");
+    const [province, setProvince] = useState("");
+    const [country, setCountry] = useState("");
+    const [postal_code, setPostalCode] = useState("");
+    const [contacts, setContacts] = useState([]);
+
+    const fetchContactDetail = async() => {
+        const response = await contactDetail(token, id)
+        const responseBody = await response.json()
+        console.log(responseBody)
+
+        if (response.status === 200) {
+            setContacts(responseBody.data)
+        }else {
+            await alertError(responseBody.errors)
+        }
+    }
+
+    const fetchAddressDetail = async() => {
+        const response = await addressDetail(token, id, addressId) 
+        const responseBody = await response.json()
+        console.log(responseBody)
+
+        if(response.status === 200) {
+            setStreet(responseBody.data.street)
+            setCity(responseBody.data.city)
+            setProvince(responseBody.data.province)
+            setCountry(responseBody.data.country)
+            setPostalCode(responseBody.data.postal_code)
+        }else {
+            await alertError(responseBody.errors)
+        }
+    }
+
+    useEffectOnce(() => {
+        fetchContactDetail().then(() => console.log("success to fetch!"))
+        fetchAddressDetail().then(() => console.log("success to fetch!"))
+    })
 
     return <>
         <div className="container mx-auto px-4 py-8 flex-grow">
@@ -33,8 +70,8 @@ const AddressEdit = () => {
                                 <i className="fas fa-user text-white" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-semibold text-white">John Doe</h2>
-                                <p className="text-gray-300 text-sm">john.doe@example.com • +1 (555) 123-4567</p>
+                                <h2 className="text-xl font-semibold text-white">{contacts.first_name} {contacts.last_name}</h2>
+                                <p className="text-gray-300 text-sm">{contacts.email} • {contacts.phone}</p>
                             </div>
                         </div>
                     </div>

@@ -30,6 +30,8 @@ const UserLogin = () => {
         })
        }else {
         alertError(responseBody.errors);
+        setUsername("")
+        setPassword("")
        }
     }
 

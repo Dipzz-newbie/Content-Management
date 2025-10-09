@@ -42,3 +42,24 @@ export const addressList = async(token, id) => {
         }
     }
 }
+
+export const addressDetail = async(token, id, addressId) => {
+     try{
+        const response = await axios.get(`${import.meta.env.VITE_API_PATH}/contacts/${id}/addresses/${addressId}`, {
+            headers: {
+                "Content-Type" : "application/json",
+                "Accept": "application/json",
+                "Authorization" : token
+            }
+        })
+        return {
+            status : response.status,
+            json : async () => response.data
+        }
+    } catch(error) {
+        return {
+            status : error.response.status,
+            json: async () => error.response.status
+        }
+    }
+}
