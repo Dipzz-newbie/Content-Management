@@ -92,7 +92,7 @@ export const contactDetail = async(token, id) => {
             status: response.status,
             json: async () => response.data
         }
-    } catch (errror) {
+    } catch (error) {
         if (error.response) {
             return {
                 status : error.response.status,

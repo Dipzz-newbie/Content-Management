@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useEffectOnce, useLocalStorage } from "react-use";
-import { alertError } from "../../lib/alert";
+import { alertConfirm, alertError, alertSuccess } from "../../lib/alert";
 import { Link, useParams } from "react-router";
 import { contactDetail } from "../../lib/api/ContactsApi";
-import { addressList, addressUpdate } from "../../lib/api/AddressApi";
+import { addressDelete, addressList} from "../../lib/api/AddressApi";
 
 const ContactDetail = () => {
 
@@ -21,7 +21,6 @@ const ContactDetail = () => {
 
         if (response.status === 200) {
             setContacts(responseBody.data)
-
         } else {
             await alertError(responseBody.errors)
         }
@@ -39,11 +38,29 @@ const ContactDetail = () => {
         }
     }
 
+    const handleDelete = async (addressId) => {
+
+        if(!await alertConfirm("Are you sure to delete this address??")){
+            return
+        }else {
+            const response = await addressDelete(token, id, addressId)
+            const responseBody = await response.json()
+
+            if(response.status === 200) {
+                await alertSuccess("Address Delete Successfully!")
+                await fetchListAdd()
+            }else {
+                await alertError(responseBody.errors)
+            }
+        }
+
+    }
+
     useEffectOnce(() => {
         fetchContacts().then(() => console.log("success to fetch"))
         fetchListAdd().then(() => console.log("success to fetch"))
     })
-    
+
     return <>
         <div className="container mx-auto px-4 py-8 flex-grow">
             <div className="flex items-center mb-6">
@@ -161,7 +178,7 @@ const ContactDetail = () => {
                                 </div> */}
                             {/* Address Card 2 */}
                             {address.map(addresses => (
-                                <div  key={addresses.id} className="bg-gray-700 bg-opacity-50 p-5 rounded-lg shadow-md border border-gray-600 card-hover">
+                                <div key={addresses.id} className="bg-gray-700 bg-opacity-50 p-5 rounded-lg shadow-md border border-gray-600 card-hover">
                                     <div className="flex items-center mb-3">
                                         <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center mr-3 shadow-md">
                                             <i className="fas fa-building text-white" />
@@ -199,7 +216,7 @@ const ContactDetail = () => {
                                         <Link to={`/dashboard/contacts/${id}/addresses/${addresses.id}/edit`} className="px-4 py-2 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-md flex items-center">
                                             <i className="fas fa-edit mr-2" /> Edit
                                         </Link>
-                                        <button className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-md flex items-center">
+                                        <button className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-md flex items-center" onClick={() => handleDelete(addresses.id)}>
                                             <i className="fas fa-trash-alt mr-2" /> Delete
                                         </button>
                                     </div>
@@ -212,7 +229,7 @@ const ContactDetail = () => {
                         <Link to="/dashboard/contacts" className="px-5 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 flex items-center shadow-md">
                             <i className="fas fa-arrow-left mr-2" /> Back
                         </Link>
-                        <Link to={`/dashboard/contacts/${id}/edit   `} className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center">
+                        <Link to={`/dashboard/contacts/${id}/edit`} className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center">
                             <i className="fas fa-user-edit mr-2" /> Edit Contact
                         </Link>
                     </div>
