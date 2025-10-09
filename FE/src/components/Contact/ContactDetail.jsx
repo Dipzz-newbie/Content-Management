@@ -161,7 +161,7 @@ const ContactDetail = () => {
                                 </div> */}
                             {/* Address Card 2 */}
                             {address.map(addresses => (
-                                <div className="bg-gray-700 bg-opacity-50 p-5 rounded-lg shadow-md border border-gray-600 card-hover">
+                                <div  key={addresses.id} className="bg-gray-700 bg-opacity-50 p-5 rounded-lg shadow-md border border-gray-600 card-hover">
                                     <div className="flex items-center mb-3">
                                         <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center mr-3 shadow-md">
                                             <i className="fas fa-building text-white" />

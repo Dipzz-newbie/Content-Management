@@ -17,7 +17,7 @@ export const addressCreate = async(token, id, data) => {
     } catch(error) {
         return {
             status : error.response.status,
-            json: async () => error.response.status
+            json: async () => error.response.data
         }
     }
 }
@@ -38,7 +38,7 @@ export const addressList = async(token, id) => {
     } catch(error) {
         return {
             status : error.response.status,
-            json: async () => error.response.status
+            json: async () => error.response.data
         }
     }
 }
@@ -59,14 +59,14 @@ export const addressDetail = async(token, id, addressId) => {
     } catch(error) {
         return {
             status : error.response.status,
-            json: async () => error.response.status
+            json: async () => error.response.data
         }
     }
 }
 
 export const addressUpdate = async(token, id, addressId, payload) => {
-    try {
-        const response = await axios.put(`${import.meta.env.VITE_API_PATH}/contatcs/${id}/addresses/${addressId}`, payload, {
+     try{
+        const response = await axios.put(`${import.meta.env.VITE_API_PATH}/contacts/${id}/addresses/${addressId}`, payload, {
             headers: {
                 "Content-Type" : "application/json",
                 "Accept" : "application/json",
@@ -74,13 +74,13 @@ export const addressUpdate = async(token, id, addressId, payload) => {
             }
         })
         return {
-                status: response.status,
-                json: async() => response.data
-            }
+            status : response.status,
+            json : async () => response.data
+        }
     } catch(error) {
         return {
             status : error.response.status,
-            json: async() => error.response.data
+            json: async () => error.response.data
         }
     }
 }
