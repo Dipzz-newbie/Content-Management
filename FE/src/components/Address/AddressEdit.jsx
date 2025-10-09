@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useEffectOnce, useLocalStorage } from "react-use";
 import { contactDetail } from "../../lib/api/ContactsApi";
-import { alertError } from "../../lib/alert";
+import { alertError, alertSuccess } from "../../lib/alert";
 import { addressDetail, addressList } from "../../lib/api/AddressApi";
 
 
@@ -17,6 +17,15 @@ const AddressEdit = () => {
     const [country, setCountry] = useState("");
     const [postal_code, setPostalCode] = useState("");
     const [contacts, setContacts] = useState([]);
+    const navigate = useNavigate()
+
+    const payload = {
+        street,
+        city,
+        province,
+        country,
+        postal_code
+    }
 
     const fetchContactDetail = async() => {
         const response = await contactDetail(token, id)
@@ -45,6 +54,21 @@ const AddressEdit = () => {
             await alertError(responseBody.errors)
         }
     }
+
+    const handleSubmit = async() => {
+        const response = await addressUpdate(token, id, addressId, payload)
+        const responseBody = await response.json()
+        console.log(responseBody)
+
+        if (response.status === 200) {
+            await alertSuccess("Edit Address Successfully!")
+            await navigate({
+                pathname: `/dashboard/contacts/${id}`
+            })
+        } else {
+            await alertError(responseBody.errors)
+        }
+    } 
 
     useEffectOnce(() => {
         fetchContactDetail().then(() => console.log("success to fetch!"))
@@ -129,7 +153,7 @@ const AddressEdit = () => {
                             <Link to={`/dashboard/contacts/${id}`} className="px-5 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 flex items-center shadow-md">
                                 <i className="fas fa-times mr-2" /> Cancel
                             </Link>
-                            <button type="submit" className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center">
+                            <button type="submit" className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center" onClick={handleSubmit}>
                                 <i className="fas fa-save mr-2" /> Save Changes
                             </button>
                         </div>

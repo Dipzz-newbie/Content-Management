@@ -3,7 +3,7 @@ import { useEffectOnce, useLocalStorage } from "react-use";
 import { alertError } from "../../lib/alert";
 import { Link, useParams } from "react-router";
 import { contactDetail } from "../../lib/api/ContactsApi";
-import { addressList } from "../../lib/api/AddressApi";
+import { addressList, addressUpdate } from "../../lib/api/AddressApi";
 
 const ContactDetail = () => {
 
