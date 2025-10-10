@@ -1,8 +1,13 @@
 import { Link, Outlet } from "react-router";
+import { useLocalStorage } from "react-use";
+import { useAuthRedirect } from "../validation/ValidationUsersLogin";
 
 
 const DashboardLayout = () => {
-        
+
+    const [token, setToken] = useLocalStorage("token", "")
+    useAuthRedirect(token)
+
     return <>
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex flex-col">
             {/* Header with right-aligned menu */}

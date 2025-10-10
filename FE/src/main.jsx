@@ -14,6 +14,7 @@ import ContactDetail from './components/Contact/ContactDetail'
 import AddressCreate from './components/Address/AddressCreate'
 import AddressEdit from './components/Address/AddressEdit'
 import Index from './components/Index'
+import NotFounds from './components/Error/404'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')).render(
             </Route>
           </Route>
         </Route>
+        <Route path='*' element={<NotFounds/>}/>
       </Routes>
     </BrowserRouter>
   </StrictMode>,

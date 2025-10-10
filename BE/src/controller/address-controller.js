@@ -81,6 +81,8 @@ const list = async (req, res, next) => {
     }
 }
 
+ 
+
 export default {
     create,
     get,
