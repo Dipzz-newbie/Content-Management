@@ -13,12 +13,14 @@ import ContactEdit from './components/Contact/ContactEdit'
 import ContactDetail from './components/Contact/ContactDetail'
 import AddressCreate from './components/Address/AddressCreate'
 import AddressEdit from './components/Address/AddressEdit'
+import Index from './components/Index'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />} >
+        <Route path='/' element={<Index/>}/>
+        <Route element={<Layout/>} >
           <Route path='/register' element={<UserRegister />} />
           <Route path='/login' element={<UserLogin />} />
         </Route>
