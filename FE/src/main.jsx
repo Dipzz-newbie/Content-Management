@@ -16,13 +16,14 @@ import AddressEdit from './components/Address/AddressEdit'
 import Index from './components/Index'
 import NotFounds from './components/Error/NotFounds'
 import ProtectedRoute from './utils/ProtectedRoute'
+import "./style/style.css"
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Index />} />
-        <Route element={<Layout />} >
+        <Route path='/' element={<Index/>} />
+        <Route element={<Layout />}>
           <Route path='/register' element={<UserRegister />} />
           <Route path='/login' element={<UserLogin />} />
         </Route>

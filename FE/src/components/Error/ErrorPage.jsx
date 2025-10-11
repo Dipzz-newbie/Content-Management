@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
 
-const ErrorPage = ({statusCode = 404, message = "Page Not Found", describe ="The page you are looking for doesn't exist or has been moved.", nameButton ="Back to Page", redirectLink = "" }) => {
+const ErrorPage = ({statusCode = 404, message = "Page Not Found", describe ="The page you are looking for doesn't exist or has been moved.", nameButton ="Back to Page", redirectLink = "", icons }) => {
     return <>
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex items-center justify-center">
             <main className="container mx-auto px-4">
@@ -15,7 +15,7 @@ const ErrorPage = ({statusCode = 404, message = "Page Not Found", describe ="The
                             <h2 className="text-2xl font-semibold text-white mb-4">{message}</h2>
                             <p className="text-gray-300 mb-8">{describe}</p>
                             <Link to={redirectLink} className="inline-flex items-center px-6 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5">
-                                <i className="fas fa-home mr-2" /> {nameButton}
+                                <i className="fa-sharp fa-solid fa-arrow-left mr-2" /> {nameButton}  
                             </Link>
                         </div>
                     </div>
