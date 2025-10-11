@@ -15,33 +15,36 @@ import AddressCreate from './components/Address/AddressCreate'
 import AddressEdit from './components/Address/AddressEdit'
 import Index from './components/Index'
 import NotFounds from './components/Error/404'
+import ProtectedRoute from './utils/ProtectedRoute'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Index/>}/>
-        <Route element={<Layout/>} >
+        <Route path='/' element={<Index />} />
+        <Route element={<Layout />} >
           <Route path='/register' element={<UserRegister />} />
           <Route path='/login' element={<UserLogin />} />
         </Route>
-        <Route path='/dashboard' element={<DashboardLayout />}>
-          <Route path='users'>
-            <Route path='profile' element={<UserProfile />} />
-            <Route path='logout' element={<UserLogout />} />
-          </Route>
-          <Route path='contacts'>
-            <Route index element={<ContactList/>} />
-            <Route path='create' element={<ContactCreate />} />
-            <Route path=':id' element={<ContactDetail/>}/>
-            <Route path=':id/edit' element={<ContactEdit/>}/>
-            <Route path=':id/addresses'>
-                <Route path='create' element={<AddressCreate/>}/>
-                <Route path=':addressId/edit' element={<AddressEdit/>}/>
+        <Route element={<ProtectedRoute/>}>
+          <Route path='/dashboard' element={<DashboardLayout />}>
+            <Route path='users'>
+              <Route path='profile' element={<UserProfile />} />
+              <Route path='logout' element={<UserLogout />} />
+            </Route>
+            <Route path='contacts'>
+              <Route index element={<ContactList />} />
+              <Route path='create' element={<ContactCreate />} />
+              <Route path=':id' element={<ContactDetail />} />
+              <Route path=':id/edit' element={<ContactEdit />} />
+              <Route path=':id/addresses'>
+                <Route path='create' element={<AddressCreate />} />
+                <Route path=':addressId/edit' element={<AddressEdit />} />
+              </Route>
             </Route>
           </Route>
         </Route>
-        <Route path='*' element={<NotFounds/>}/>
+        <Route path='*' element={<NotFounds />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
