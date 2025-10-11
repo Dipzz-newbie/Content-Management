@@ -1,5 +1,5 @@
 import {useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useEffectOnce, useLocalStorage } from "react-use";
 import { contactDetail, contactUpdate } from "../../lib/api/ContactsApi";
 import { alertError, alertSuccess } from "../../lib/alert";
@@ -13,6 +13,7 @@ const ContactEdit = () => {
     const [phone, setPhone] = useState("");
     const {id} = useParams();
     const [token, _] = useLocalStorage("token", "");
+    const navigate = useNavigate()
 
     const fetchContact = async() => {
         const response = await contactDetail(token, id);
@@ -36,6 +37,9 @@ const ContactEdit = () => {
 
         if(response.status === 200) {   
             await alertSuccess("Edit Contact Successfully!")
+            await navigate({
+                pathname : `/dashboard/contacts/${id}`
+            })
         }else {
             await alertError(responseBody.errors)
         }
